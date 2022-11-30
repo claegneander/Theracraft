@@ -1,0 +1,11 @@
+name: Theracraft
+version: '${version}'
+main: me.claegneander.theracraft.Main
+api-version: 1.19
+authors: [ claegneander ]
+
+commands:
+  theracraft:
+    aliases: [t, tc, thera]
+  nv:
+    aliases: [nightvision, night_vision]

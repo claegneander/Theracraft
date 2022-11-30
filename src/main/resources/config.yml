@@ -1,0 +1,91 @@
+#Welcome the config.yml! This is where the plugin parses various settings. Change at your own risk.
+
+#This section is for your mySQL database. If you are not sure where this is, contact your server provider.
+#NOT CURRENTLY SUPPORTED.
+mySQL:
+  mySQL-enabled: false
+  host: host
+  port: 3306
+  database: database
+  username: username
+  password: password
+  minimumConnections: 5
+  maximumConnections: 10
+  connectionTimeOut: 5000
+
+#Rank System
+#The sub-rank such as stone (which is our default) will be the name of the rank.
+#The playtime can not be null, and is done in ticks.
+#A way for us to calculate ticks to time values.
+#https://mapmaking.fr/tick/
+#Display is just the rank name as displayed when using the check command. Ideally set this to be what LuckPerms is using.
+#Display can not be null.
+#Material needs to be their material name in the code followed by their amount you want to be collected.
+ranks:
+  stone:
+    display: '&f[Stone]'
+    playtime: 0
+  coal:
+    display: '&f[Coal]'
+    playtime: 216000
+    materials:
+      coal: 64
+      oak_log: 32
+      mud: 32
+      beef: 32
+      chicken: 32
+  iron:
+    display: '&f[Iron]'
+    playtime: 432000
+    materials:
+      iron_ingot: 64
+      carrot: 64
+      potato: 64
+      wheat: 64
+      sugar_cane: 64
+  gold:
+    display: '&f[Gold]'
+    playtime: 1728000
+    materials:
+      gold_ingot: 128
+      mangrove_log: 128
+      mangrove_roots: 128
+      verdant_froglight: 128
+      rooted_dirt: 128
+  emerald:
+    display: '&f[Emerald]'
+    playtime: 5184000
+    materials:
+      emerald: 128
+      glow_berries: 128
+      moss_block: 128
+      melon: 128
+      pumpkin: 128
+  diamond:
+    display: '&f[Diamond]'
+    playtime: 8640000
+    materials:
+      diamond: 128
+      pointed_dripstone: 128
+      amethyst_shard: 128
+      raw_copper: 128
+      deepslate: 128
+  obsidian:
+    display: '&f[Obsidian]'
+    playtime: 12096000
+    materials:
+      obsidian: 128
+      soul_soil: 128
+      bone_block: 128
+      basalt: 128
+      shroomlight: 128
+  netherite:
+    display: '&f[Netherite]'
+    playtime: 15552000
+    materials:
+      netherite_ingot: 64
+      nether_star: 64
+      sculk: 64
+  fulltime:
+    display: '&f[Fulltime]'
+    playtime: 34560000
