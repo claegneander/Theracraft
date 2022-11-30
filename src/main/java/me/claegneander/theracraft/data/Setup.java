@@ -60,7 +60,33 @@ public class Setup {
 
     }
     public void updateRank(Player player){
-
+        String currentRank = getRank(Player);
+        String nextRank = currentRank;
+        for(Component c : ranks.getNames().values()){
+            if(Use.key(c).equals(currentRank)){
+                int x = ranks.getNames().indexOf(c) - 1;
+                if(x <= 0){break;}
+                if(x >= ranks.getNames().size()){break;}
+                nextRank = ranks.getNames().get(x);
+            }
+        }
+        if(!Objects.equals(currentRank, nextRank)) {
+            if(isPromotable(player)){
+                try {
+                    removeRank(player);
+                    removeMaterials(player);
+                    setRank(player, nextRank);
+                    addMaterials(player);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+           }else {
+                player.sendMessage(Component.text("You do not meet all the requirements to rank up.").color(TextColor.fromHexString(Color.ERROR.getHEX()));
+                player.sendMessage(Component.text("To see your requirements; \"/theracraft check\".").color(TextColor.fromHexString(Color.INFO.getHEX()));
+            }
+        }else{
+            player.sendMessage(Component.text("You are already at the highest rank.").color(TextColor.fromHexString(Color.INFO.getHEX()));
+        }
     }
     public void addMaterials(Player player){
 
