@@ -5,12 +5,16 @@ import me.claegneander.theracraft.misc.Use;
 import me.claegneander.theracraft.misc.enums.Color;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class Setup {
     /* This class handles our interactions with the ranks. */
@@ -87,7 +91,7 @@ public class Setup {
     }
     public void checkRank(Player player){
         String nextRank = getNextRank(player);
-        Rank rank = getRankFromString(getRank(player));
+        Rank rank = getRankFromString(nextRank);
         player.sendMessage(Component.text("-------------------------------")
                 .color(TextColor.fromHexString(Color.getRandomColor())));
         player.sendMessage(Component.text("You are viewing the path to: " + nextRank + "!")
@@ -96,7 +100,7 @@ public class Setup {
                 .color(TextColor.fromHexString(Color.getRandomColor())));
         long requiredTime = rank.getPlayTime();
         long playedTime = timing.getPlayedTime(player);
-        float percentage = (float) playedTime/requiredTime;
+        float percentage = (float) (playedTime * 100)/requiredTime;
         int rounded = (int) percentage;
         if(timing.checkTime(player, requiredTime)){
             player.sendMessage(Component.text("Play for " + timing.format(requiredTime) + ":" + " (" + rounded + "%)")
@@ -130,6 +134,9 @@ public class Setup {
                     removeMaterials(player);
                     setRank(player, nextRank);
                     addMaterials(player);
+                    //TODO: Broadcast on rank up for everyone, include who ranked up and to what rank.
+                    player.sendMessage(Component.text("You have ranked up!")
+                            .color(TextColor.fromHexString(Color.SUCCESS.getHEX())));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -145,7 +152,7 @@ public class Setup {
         }
     }
     public void addMaterials(Player player){
-        Rank rank = getRankFromString(getRank(player));
+        Rank rank = getRankFromString(getNextRank(player));
         for(Material m : rank.getMaterials().keySet()){
             if(!pdc.hasPDCInteger(player, String.valueOf(m))){
                 pdc.setPDCInteger(player, String.valueOf(m), rank.materials.get(m));
@@ -169,22 +176,20 @@ public class Setup {
         }
     }
     public boolean isPromotable(Player player){
-        String nextRank = getNextRank(player);
-        Rank rank = getRankFromString(nextRank);
+        Rank rank = getRankFromString(getRank(player));
         long requiredTime = rank.getPlayTime();
         long playedTime = timing.getPlayedTime(player);
-        boolean time = requiredTime < playedTime;
+        boolean time = playedTime > requiredTime;
         int count = 0;
         for(Material m : rank.getMaterials().keySet()){
-            if(pdc.hasPDCInteger(player, String.valueOf(m))){
-                int amount = pdc.getPDCInteger(player, String.valueOf(m));
-                count += amount;
+            if(m != null) {
+                if (pdc.hasPDCInteger(player, String.valueOf(m))) {
+                    int amount = pdc.getPDCInteger(player, String.valueOf(m));
+                    count += amount;
+                }
             }
         }
         boolean materials = count == 0;
-        player.sendMessage(String.valueOf(count));
-        player.sendMessage(String.valueOf(requiredTime));
-        player.sendMessage(String.valueOf(playedTime));
         return time && materials;
     }
     public void removeItem(Player player, Material material, int amount){

@@ -36,8 +36,12 @@ public class NV implements Ancillary, CommandExecutor {
         }
         if (player.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
             player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+            player.sendMessage(Component.text("Night vision disabled.")
+                    .color(TextColor.fromHexString(Color.ERROR.getHEX())));
         } else {
             player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 60000, 1));
+            player.sendMessage(Component.text("Night vision enabled.")
+                    .color(TextColor.fromHexString(Color.SUCCESS.getHEX())));
         }
     }
     @Override

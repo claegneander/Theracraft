@@ -28,7 +28,6 @@ public class Check implements Ancillary {
                     .color(TextColor.fromHexString(Color.ERROR.getHEX())));
             return;
         }
-        player.sendMessage(args);
         if(args.length == 1) {
             setup.checkRank(player);
         }
