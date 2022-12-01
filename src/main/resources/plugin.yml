@@ -9,3 +9,17 @@ commands:
     aliases: [t, tc, thera]
   nv:
     aliases: [nightvision, night_vision]
+
+permissions:
+  theracraft.commands.check:
+    default: true
+  theracraft.commands.help:
+    default: true
+  theracraft.commands.update:
+    default: true
+  theracraft.commands.setrank:
+    default: op
+  theracraft.commands.removerank:
+    default: op
+  theracraft.commands.nv:
+    default: op

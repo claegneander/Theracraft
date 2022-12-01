@@ -15,9 +15,10 @@ public class Timing {
         return getPlayedTime(player) >= time;
     }
     public String format(long time){
+        time = time / 20;
         long days = TimeUnit.SECONDS.toDays(time);
         long hours = TimeUnit.SECONDS.toHours(time) - TimeUnit.DAYS.toHours(days);
-        long minutes = TimeUnit.SECONDS.toMinutes(time) - TimeUnit.HOURS.toMinutes(hours);
+        long minutes = TimeUnit.SECONDS.toMinutes(time) - TimeUnit.DAYS.toMinutes(days) - TimeUnit.HOURS.toMinutes(hours);
         StringBuilder builder = new StringBuilder();
         if (days == 1L) {
             builder.append("1 day, ");

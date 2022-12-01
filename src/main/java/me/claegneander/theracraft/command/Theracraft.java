@@ -1,7 +1,7 @@
 package me.claegneander.theracraft.command;
 
 import me.claegneander.theracraft.command.ancillary.Ancillary;
-import me.claegneander.theracraft.command.ancillary.alpha.Help;
+import me.claegneander.theracraft.command.ancillary.alpha.*;
 import me.claegneander.theracraft.misc.enums.Color;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -26,7 +26,11 @@ public class Theracraft implements CommandExecutor{
         usages = new HashMap<>();
         descriptions = new HashMap<>();
 
+        commands.put("check", new Check());
         commands.put("help", new Help());
+        commands.put("removerank", new Remove_Rank());
+        commands.put("setrank", new Set_Rank());
+        commands.put("update", new Update());
 
         for(String s : commands.keySet()){
             permissions.put(s, commands.get(s).getPermission());

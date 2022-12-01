@@ -1,7 +1,6 @@
 package me.claegneander.theracraft.command.ancillary.alpha;
 
 import me.claegneander.theracraft.Main;
-import me.claegneander.theracraft.command.Theracraft;
 import me.claegneander.theracraft.command.ancillary.Ancillary;
 import me.claegneander.theracraft.data.Setup;
 import me.claegneander.theracraft.misc.enums.Color;
@@ -12,7 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-public class Check implements Ancillary {
+public class Set_Rank implements Ancillary {
     private final Main plugin = Main.getPlugin(Main.class).getInstance();
     private final ConsoleCommandSender console = plugin.getConsole();
     private final Setup setup = new Setup();
@@ -28,31 +27,26 @@ public class Check implements Ancillary {
                     .color(TextColor.fromHexString(Color.ERROR.getHEX())));
             return;
         }
-        player.sendMessage(args);
-        if(args.length == 1) {
-            setup.checkRank(player);
-        }
-        if(args.length > 1){
+        if(args.length > 2) {
             for(Player target : Bukkit.getOnlinePlayers()){
                 if(args[1].equalsIgnoreCase(target.getName())){
-                    setup.checkRank(target);
+                    setup.setRank(target, args[2]);
                 }
             }
         }
     }
     @Override
     public String getPermission() {
-        return "theracraft.commands.check";
+        return "theracraft.commands.setrank";
     }
 
     @Override
     public String getUsage() {
-        return "/theracraft check";
+        return "/theracraft setrank [Player] [Rank]";
     }
 
     @Override
     public String getDescription() {
-        return "Checks the player's rank requirements.";
+        return "Sets the player to the specified rank.";
     }
-
 }
