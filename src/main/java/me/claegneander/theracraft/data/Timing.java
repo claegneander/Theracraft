@@ -9,7 +9,7 @@ public class Timing {
 
     /* This returns time in ticks played. */
     public long getPlayedTime(Player player){
-        return player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20;
+        return player.getStatistic(Statistic.PLAY_ONE_MINUTE);
     }
     public boolean checkTime(Player player, long time){
         return getPlayedTime(player) >= time;
