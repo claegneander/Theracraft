@@ -4,8 +4,11 @@ import me.claegneander.theracraft.Main;
 import me.claegneander.theracraft.misc.Use;
 import me.claegneander.theracraft.misc.enums.Color;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -94,8 +97,8 @@ public class Setup {
         Rank rank = getRankFromString(nextRank);
         player.sendMessage(Component.text("-------------------------------")
                 .color(TextColor.fromHexString(Color.getRandomColor())));
-        player.sendMessage(Component.text("You are viewing the path to: " + nextRank + "!")
-                .color(TextColor.fromHexString(Color.getRandomColor())));
+        player.sendMessage(Component.text(Messages.sendMultiColoredMessage(
+                "&9You are viewing the path to: ", "&6" + nextRank, "&9!")));
         player.sendMessage(Component.text("-------------------------------")
                 .color(TextColor.fromHexString(Color.getRandomColor())));
         long requiredTime = rank.getPlayTime();
@@ -103,11 +106,11 @@ public class Setup {
         float percentage = (float) (playedTime * 100)/requiredTime;
         int rounded = (int) percentage;
         if(timing.checkTime(player, requiredTime)){
-            player.sendMessage(Component.text("Play for " + timing.format(requiredTime) + ":" + " (" + rounded + "%)")
-                    .color(TextColor.fromHexString(Color.SUCCESS.getHEX())));
+            player.sendMessage(Component.text(Messages.sendMultiColoredMessage(
+                    "&9Play for ", "&6"+timing.format(requiredTime), "&9: ", "&a (" + rounded + "%)")));
         }else{
-            player.sendMessage(Component.text("Play for " + timing.format(requiredTime) + ":" + " (" + rounded + "%)")
-                    .color(TextColor.fromHexString(Color.ERROR.getHEX())));
+            player.sendMessage(Component.text(Messages.sendMultiColoredMessage(
+                    "&9Play for ", "&6"+timing.format(requiredTime), "&9: ", "&c (" + rounded + "%)")));
         }
         for(Material m : rank.materials.keySet()){
             if(pdc.hasPDCInteger(player, String.valueOf(m))){
@@ -115,11 +118,11 @@ public class Setup {
                 int amount = rank.materials.get(m);
                 int x = amount - count;
                 if(count == 0){
-                    player.sendMessage(Component.text("Submit " + m + ": " + x + "/" + amount)
-                            .color(TextColor.fromHexString(Color.SUCCESS.getHEX())));
+                    player.sendMessage(Component.text(Messages.sendMultiColoredMessage(
+                            "&9Submit ", "&6"+m, "&9: ", "&a"+x, "&9/", "&a"+amount)));
                 }else{
-                    player.sendMessage(Component.text("Submit " + m + ": " + x + "/" + amount)
-                            .color(TextColor.fromHexString(Color.ERROR.getHEX())));
+                    player.sendMessage(Component.text(Messages.sendMultiColoredMessage(
+                            "&9Submit ", "&6"+m, "&9: ", "&c"+x, "&9/", "&c"+amount)));
                 }
             }
         }
@@ -134,7 +137,9 @@ public class Setup {
                     removeMaterials(player);
                     setRank(player, nextRank);
                     addMaterials(player);
-                    //TODO: Broadcast on rank up for everyone, include who ranked up and to what rank.
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " promote players");
+                    Bukkit.getServer().broadcast(Component.text(Messages.sendMultiColoredMessage("&9The player ",
+                            "&a" + player.getName(), " &9has ranked up to ", "&a" + nextRank, "&9...?!")));
                     player.sendMessage(Component.text("You have ranked up!")
                             .color(TextColor.fromHexString(Color.SUCCESS.getHEX())));
                 } catch (Exception e) {
@@ -143,8 +148,8 @@ public class Setup {
            }else {
                 player.sendMessage(Component.text("You do not meet all the requirements to rank up.")
                         .color(TextColor.fromHexString(Color.ERROR.getHEX())));
-                player.sendMessage(Component.text("To see your requirements; \"/theracraft check\".")
-                        .color(TextColor.fromHexString(Color.INFO.getHEX())));
+                player.sendMessage(Component.text(Messages.sendMultiColoredMessage("&9To see your requirements; ",
+                        "&6\"/theracraft check\".")));
             }
         }else{
             player.sendMessage(Component.text("You are already at the highest rank.")
@@ -167,7 +172,7 @@ public class Setup {
         }
     }
     public void submitMaterials(Player player){
-        Rank rank = getRankFromString(getRank(player));
+        Rank rank = getRankFromString(getNextRank(player));
         for(Material m : rank.materials.keySet()){
             if(pdc.hasPDCInteger(player, String.valueOf(m))){
                 int amount = pdc.getPDCInteger(player, String.valueOf(m));
@@ -197,13 +202,14 @@ public class Setup {
         Inventory i = player.getInventory();
         boolean isRemoved = false;
         int removed = amount;
-        if(amount == 0 ){return;}
         for(ItemStack x : i.getContents()) {
+            if(amount == 0 ){return;}
             if (x != null) {
                 if (x.isSimilar(item)) {
                     if (pdc.hasPDCInteger(player, String.valueOf(material))) {
                         if (x.getAmount() > amount) {
                             x.setAmount(x.getAmount() - amount);
+                            amount = 0;
                             pdc.setPDCInteger(player, String.valueOf(material), 0);
                         } else {
                             removed = x.getAmount();
@@ -214,8 +220,9 @@ public class Setup {
                         isRemoved = true;
                     }
                     if(isRemoved){
-                        player.sendMessage(Component.text("Removed " + removed + " " + material + " from your inventory.")
-                                .color(TextColor.fromHexString(Color.SUCCESS.getHEX())));
+                        player.sendMessage(Component.text(Messages.sendMultiColoredMessage(
+                                "&9Removed ", "&6"+removed+" "+material,"&9 from your inventory.")));
+
                     }
                 }
             }
