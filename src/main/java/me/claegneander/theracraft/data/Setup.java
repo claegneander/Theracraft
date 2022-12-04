@@ -103,8 +103,6 @@ public class Setup {
                 .color(TextColor.fromHexString(Color.getRandomColor())));
         long requiredTime = rank.getPlayTime();
         long playedTime = timing.getPlayedTime(player);
-        player.sendMessage(String.valueOf(requiredTime));
-        player.sendMessage(String.valueOf(playedTime));
         float percentage = (float) playedTime/requiredTime;
         int rounded = (int) percentage;
         if(timing.checkTime(player, requiredTime)){
@@ -183,7 +181,7 @@ public class Setup {
         }
     }
     public boolean isPromotable(Player player){
-        Rank rank = getRankFromString(getRank(player));
+        Rank rank = getRankFromString(getNextRank(player));
         long requiredTime = rank.getPlayTime();
         long playedTime = timing.getPlayedTime(player);
         boolean time = playedTime > requiredTime;
