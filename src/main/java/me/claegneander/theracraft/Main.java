@@ -4,6 +4,7 @@ import me.claegneander.theracraft.command.NV;
 import me.claegneander.theracraft.command.Theracraft;
 import me.claegneander.theracraft.data.Ranks;
 import me.claegneander.theracraft.event.Player_Join;
+import me.claegneander.theracraft.event.World_Change;
 import me.claegneander.theracraft.misc.enums.Color;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -58,6 +59,7 @@ public final class Main extends JavaPlugin {
         try{
             List<Listener> listeners = new ArrayList<>();
             listeners.add(new Player_Join());
+            listeners.add(new World_Change());
             for(Listener l : listeners){
                 pm.registerEvents(l, instance);
                 console.sendMessage(Component.text("[Theracraft]: Registering the listener: " + l)
