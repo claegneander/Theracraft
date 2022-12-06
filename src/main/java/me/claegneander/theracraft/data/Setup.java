@@ -103,7 +103,7 @@ public class Setup {
                 .color(TextColor.fromHexString(Color.getRandomColor())));
         long requiredTime = rank.getPlayTime();
         long playedTime = timing.getPlayedTime(player);
-        float percentage = (float) playedTime/requiredTime;
+        float percentage = Math.floorDiv(100L * playedTime, requiredTime);
         int rounded = (int) percentage;
         if(timing.checkTime(player, requiredTime)){
             player.sendMessage(Component.text(Messages.sendMultiColoredMessage(
