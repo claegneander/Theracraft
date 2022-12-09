@@ -137,7 +137,7 @@ public class Setup {
                     removeMaterials(player);
                     setRank(player, nextRank);
                     addMaterials(player);
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " promote players");
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getUniqueId() + " promote players");
                     Bukkit.getServer().broadcast(Component.text(Messages.sendMultiColoredMessage("&9The player ",
                             "&a" + player.getName(), " &9has ranked up to ", "&a" + nextRank, "&9...?!")));
                     player.sendMessage(Component.text("You have ranked up!")
